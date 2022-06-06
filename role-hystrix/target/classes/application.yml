@@ -1,0 +1,54 @@
+server:
+  port: 8005
+
+eureka:
+  client:
+    #表示是否将自己注册进Eurekaserver默认为true。
+    register-with-eureka: true
+    #是否从EurekaServer抓取已有的注册信息，默认为true。单节点无所谓，集群必须设置为true才能配合ribbon使用负载均衡
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka # 单个注册中心
+      #defaultZone: http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka # 注册中心集群
+  instance:
+    instance-id: role-hystrix-8005 # 在注册中心的别名
+    prefer-ip-address: true # 显示IP地址
+
+spring:
+  application:
+    name: role-service
+  cloud:
+    loadbalancer:
+      retry:
+        #这个表示在响应非正常情况时,表示开启重试机制
+        enable: true
+
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver        # #mysql驱动包
+    type: com.alibaba.druid.pool.DruidDataSource      #当前数据源操作类型
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding-utr-8&useSSL=false
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.yang.springcloud.user.entity     #所有Entity别名类所在包
+
+# 开启feign日志
+logging:
+  level:
+    # 监控的接口
+    com.yang.springcloud.role.feign.UserHystrixFeignApi: debug
+#设置feign超时时间（feign默认支持ribbon）
+ribbon:
+  # 建立服务连接超时时间
+  ReadTimeout: 8000
+  # 从服务器请求所用时间
+  ConnectTimeout: 8000
+  #MaxAutoRetries: 2
+
+
+feign:
+  hystrix:
+    #是否启用熔断器
+    enabled: true

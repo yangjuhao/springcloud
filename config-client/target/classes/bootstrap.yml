@@ -1,0 +1,28 @@
+server:
+  port: 3355
+spring:
+  application:
+    name: config-client
+
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver        # #mysql驱动包
+    type: com.alibaba.druid.pool.DruidDataSource      #当前数据源操作类型
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding-utr-8&useSSL=false
+    username: root
+    password: root
+  cloud:
+    # config 客户端配置
+    config:
+      label: master #分支名称
+      name: config # 配置文件名称
+      profile: dev # 读取后缀名称
+      uri: http://localhost:3344 # 配置中心名称
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka # 单个注册中心
+      #defaultZone: http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka # 注册中心集群
+  instance:
+    instance-id: config-client3355 # 在注册中心的别名
+    prefer-ip-address: true # 显示IP地址
