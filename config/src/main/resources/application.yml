@@ -11,7 +11,7 @@ eureka:
       defaultZone: http://localhost:7001/eureka # 单个注册中心
       #defaultZone: http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka # 注册中心集群
   instance:
-    instance-id: user8001 # 在注册中心的别名
+    instance-id: ${spring.application.name}:${server.port} # 在注册中心的别名
     prefer-ip-address: true # 显示IP地址
 
 
@@ -33,7 +33,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/yangjuhao/springcloud-config.git # git上面项目名称
+          uri: git@github.com:yangjuhao/springcloud-config.git # git上面项目名称
           # 搜索目录
           search-paths:
             - springcloud-config
